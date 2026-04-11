@@ -1,0 +1,44 @@
+name: My CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dogzh-server/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: dogzh-server/server
+
+    permissions:
+      id-token: write
+      contents: read
+
+    env:
+      TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+      TF_VAR_project_number: ${{ secrets.GCP_PROJECT_NUMBER }}
+      TF_VAR_service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      TF_VAR_region: ${{ secrets.GCP_REGION }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Auth GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Zip code
+        run: |
+          zip -r source.zip .
+
+      - run: terraform init
+      - run: terraform apply -auto-approve
