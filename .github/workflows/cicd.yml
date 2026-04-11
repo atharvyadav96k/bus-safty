@@ -41,3 +41,5 @@ jobs:
       - run: terraform init
 
       - run: terraform apply -auto-approve
+
+      #name: cicd completed
