@@ -1,55 +1,42 @@
-name: Server CI/CD
+name: Reusable Server Deploy
 
 on:
-  push:
-    branches: 
-        - main
-    paths:
-      - 'dogzh/server/**'
-      - .github/workflows/deploy-server.yml
+  workflow_call:
+    inputs:
+      working-directory:
+        required: true
+        type: string
+    secrets:
+      GCP_PROJECT_ID: { required: true }
+      GCP_WIF_PROVIDER: { required: true }
+      GCP_SA_EMAIL: { required: true }
+      GCP_SERVER_PORT: { required: true }
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Authenticate to GCP
-        id: auth
+      - id: auth
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Configure Docker
+      - name: Build and Push
         run: |
-          # Taking region from GitHub Variables
           gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev
-
-      - name: Build and Push Container
-        run: |
-          # Constructing IMAGE_URL using the region variable
           IMAGE_URL="${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/dogzh-repo/server:${{ github.sha }}"
-          
           docker build -t $IMAGE_URL .
           docker push $IMAGE_URL
-          
-          # Save IMAGE_URL for the Terraform step
           echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
-        working-directory: dogzh/server
+        working-directory: ${{ inputs.working-directory }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Deploy
+      - name: Terraform
         run: |
           terraform init
           terraform apply -auto-approve \
@@ -57,4 +44,4 @@ jobs:
             -var="container_image=${{ env.IMAGE_URL }}" \
             -var="region=${{ vars.GCP_REGION }}" \
             -var="port=${{ secrets.GCP_SERVER_PORT }}"
-        working-directory: dogzh/server
+        working-directory: ${{ inputs.working-directory }}

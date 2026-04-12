@@ -8,11 +8,20 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      function: ${{ steps.filter.outputs.function }}
+      server: ${{ steps.filter.outputs.server }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
-            - cloud-function/**
+            server:
+              - 'dogzh/server/**'
+
+  deploy-server:
+    needs: changes
+    if: needs.changes.outputs.server == 'true'
+    uses: ./.github/workflows/reusable-server.yml
+    with:
+      working-directory: dogzh/server
+    secrets: inherit
