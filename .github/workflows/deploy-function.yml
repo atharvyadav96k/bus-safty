@@ -1,4 +1,4 @@
-name: Deploy Go Function (Reusable)
+name: Deploy Service
 
 on:
   workflow_call:
@@ -9,51 +9,58 @@ on:
       gcp_region:
         required: true
         type: string
-
+      deploy-type:
+        required: true
+        type: string # "run" or "function"
     secrets:
-      GCP_PROJECT_ID:
-        required: true
-      GCP_PROJECT_NUMBER:
-        required: true
-      GCP_SA_EMAIL:
-        required: true
-      GCP_WIF_PROVIDER:
-        required: true
-      GCP_BUCKET_NAME:
-        required: true
+      GCP_PROJECT_ID: { required: true }
+      GCP_WIF_PROVIDER: { required: true }
+      GCP_SA_EMAIL: { required: true }
+      GCP_SERVER_PORT: { required: true }
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ${{ inputs.working-directory }}
-
-    env:
-      TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
-      TF_VAR_project_number: ${{ secrets.GCP_PROJECT_NUMBER }}
-      TF_VAR_service_account: ${{ secrets.GCP_SA_EMAIL }}
-      TF_VAR_region: ${{ inputs.gcp_region }}
-      TF_VAR_bucket_name: ${{ secrets.GCP_BUCKET_NAME }}
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Authenticate to GCP (OIDC)
+      - id: auth
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 
+      - name: Docker Auth & Build
+        if: ${{ inputs.deploy-type == 'run' }}
+        run: |
+          gcloud auth configure-docker ${{ inputs.gcp_region }}-docker.pkg.dev
+          
+          IMAGE_URL="${{ inputs.gcp_region }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/dogzh-repo/server:${{ github.sha }}"
+          
+          docker build -t $IMAGE_URL .
+          docker push $IMAGE_URL
+          echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
+        working-directory: ${{ inputs.working-directory }}
+
       - uses: hashicorp/setup-terraform@v3
 
-      - name: Create Source Zip
+      - name: Terraform Apply
         run: |
-          cd function
-          zip -r ../source.zip .
-
-      - run: terraform init
-      - run: terraform plan -input=false
-      - run: terraform apply -auto-approve -input=false
-
+          terraform init
+          # If it's a function, we don't pass container_image (unless using functions-from-containers)
+          if [ "${{ inputs.deploy-type }}" == "run" ]; then
+            terraform apply -auto-approve \
+              -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+              -var="container_image=${{ env.IMAGE_URL }}" \
+              -var="region=${{ inputs.gcp_region }}" \
+              -var="port=${{ secrets.GCP_SERVER_PORT }}"
+          else
+            terraform apply -auto-approve \
+              -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+              -var="region=${{ inputs.gcp_region }}"
+          fi
+        working-directory: ${{ inputs.working-directory }}

@@ -1,85 +1,48 @@
-name: Multiple Go Functions Deploy
+name: Monorepo Deploy
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'demo/**'
-      - 'users/create-users/**'
-      - 'users/delete-user/**'
-      - 'users/update-user/**'
-  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
-  detect-changes:
+  changes:
     runs-on: ubuntu-latest
     outputs:
-      demo: ${{ steps.filter.outputs.demo }}
-      create-users: ${{ steps.filter.outputs.create-users }}
-      delete-user: ${{ steps.filter.outputs.delete-user }}
-      update-user: ${{ steps.filter.outputs.update-user }}
-
+      server: ${{ steps.filter.outputs.server }}
+      notify: ${{ steps.filter.outputs.notify }}
     steps:
       - uses: actions/checkout@v4
-
-      - id: filter
-        uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
           filters: |
-            demo:
-              - 'demo/**'
-            create-users:
-              - 'users/create-users/**'
-            delete-user:
-              - 'users/delete-user/**'
-            update-user:
-              - 'users/update-user/**'
+            server:
+              - 'dogzh-server/**'
+            notify:
+              - 'notify-function/**'
 
-  deploy-demo:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.demo == 'true'
+  deploy-server:
+    needs: changes
+    if: needs.changes.outputs.server == 'true'
     permissions:
       id-token: write
       contents: read
-    uses: ./.github/workflows/deploy-function.yml
+    uses: ./.github/workflows/deploy-run.yml
     with:
-      working-directory: demo
-      gcp_region: ${{ vars.GCP_REGION }}
+      working-directory: dogzh-server
+      gcp_region: "us-central1"
+      deploy-type: "run"
     secrets: inherit
 
-  deploy-create-users:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.create-users == 'true'
+  deploy-notify:
+    needs: changes
+    if: needs.changes.outputs.notify == 'true'
     permissions:
       id-token: write
       contents: read
-    uses: ./.github/workflows/deploy-function.yml
+    uses: ./.github/workflows/deploy-run.yml # Reusing the same logic or a separate one
     with:
-      working-directory: users/create-users
-      gcp_region: ${{ vars.GCP_REGION }}
-    secrets: inherit
-
-  deploy-delete-user:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.delete-user == 'true'
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/deploy-function.yml
-    with:
-      working-directory: users/delete-user
-      gcp_region: ${{ vars.GCP_REGION }}
-    secrets: inherit
-
-  deploy-update-user:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.update-user == 'true'
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/deploy-function.yml
-    with:
-      working-directory: users/update-user
-      gcp_region: ${{ vars.GCP_REGION }}
+      working-directory: notify-function
+      gcp_region: "us-central1"
+      deploy-type: "function"
     secrets: inherit
