@@ -15,7 +15,7 @@ func main() {
 	r := mux.NewRouter()
 
 	controller.RegisterApiRoutes(r)
-	os.Getenv("no")
+	os.Getenv("noss")
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         "127.0.0.1:8080",
