@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/atharvyadav96k/bus-safty/dogzh-server/controller"
@@ -14,7 +15,7 @@ func main() {
 	r := mux.NewRouter()
 
 	controller.RegisterApiRoutes(r)
-
+	os.Getenv("no")
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         "127.0.0.1:8080",
