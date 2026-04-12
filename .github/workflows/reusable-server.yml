@@ -36,6 +36,10 @@ jobs:
           echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
         working-directory: ${{ inputs.working-directory }}
 
+      - name: Debug Path
+        run: |
+          echo "Current Path: $(pwd)"
+          ls -R
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
