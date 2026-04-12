@@ -21,6 +21,9 @@ jobs:
   deploy-server:
     needs: changes
     if: needs.changes.outputs.server == 'true'
+    permissions:
+      id-token: write
+      contents: read
     uses: ./.github/workflows/reusable-server.yml
     with:
       working-directory: dogzh/server
