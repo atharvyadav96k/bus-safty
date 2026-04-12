@@ -1,4 +1,4 @@
-name: Monorepo Deploy
+name: Checking for changes
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
       contents: read
     uses: ./.github/workflows/deploy-function.yml
     with:
-      working-directory: dogzh-server
+      working-directory: dogzh-server/server
       gcp_region: "us-central1"
       deploy-type: "run"
     secrets: inherit
