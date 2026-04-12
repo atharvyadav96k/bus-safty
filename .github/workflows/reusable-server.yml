@@ -18,6 +18,11 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,25 +34,28 @@ jobs:
 
       - name: Build and Push
         run: |
-          gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev
-          IMAGE_URL="${{ vars.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/dogzh-repo/server:${{ github.sha }}"
+          # Note: We use the region from vars or hardcode if not set
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          IMAGE_URL="us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/dogzh-repo/server:${{ github.sha }}"
           docker build -t $IMAGE_URL .
           docker push $IMAGE_URL
-          echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
-        working-directory: ${{ inputs.working-directory }}
+          # Save this to a file because ENV variables don't always persist across directory changes
+          echo "$IMAGE_URL" > /tmp/image_url.txt
 
-      - name: Debug Path
-        run: |
-          echo "Current Path: $(pwd)"
-          ls -R
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_wrapper: false
 
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Apply
         run: |
+          # Read the image URL we just built
+          IMAGE_URL=$(cat /tmp/image_url.txt)
+          
           terraform apply -auto-approve \
           -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
-          -var="container_image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/bus-safty:${{ github.sha }}" \
-          -var="port=8080"
+          -var="container_image=$IMAGE_URL" \
+          -var="port=${{ secrets.GCP_SERVER_PORT }}"
