@@ -36,7 +36,12 @@ jobs:
           echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
         working-directory: ${{ inputs.working-directory }}
 
-      - name: Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Terraform Apply
         run: |
           terraform init
           terraform apply -auto-approve \
