@@ -17,6 +17,7 @@ jobs:
           filters: |
             server:
               - 'dogzh-server/**'
+              - '.github/workflows/reusable-server.yml'
 
   deploy-server:
     needs: changes

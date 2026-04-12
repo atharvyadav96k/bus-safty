@@ -43,10 +43,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          terraform init
           terraform apply -auto-approve \
-            -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
-            -var="container_image=${{ env.IMAGE_URL }}" \
-            -var="region=${{ vars.GCP_REGION }}" \
-            -var="port=${{ secrets.GCP_SERVER_PORT }}"
-        working-directory: ${{ inputs.working-directory }}
+          -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+          -var="container_image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/bus-safty:${{ github.sha }}" \
+          -var="port=8080"
