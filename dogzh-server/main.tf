@@ -15,7 +15,6 @@ variable "service_name" {
   default     = "dogzh-server"
 }
 
-
 variable "container_image" {
   description = "The URI of the container image in Artifact Registry or GCR"
   type        = string
