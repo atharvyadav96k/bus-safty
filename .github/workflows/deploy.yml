@@ -26,5 +26,5 @@ jobs:
       contents: read
     uses: ./.github/workflows/reusable-server.yml
     with:
-      working-directory: dogzh-server
+      working-directory: dogzh-server/server
     secrets: inherit
