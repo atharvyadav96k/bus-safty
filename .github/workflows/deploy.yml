@@ -27,22 +27,9 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: ./.github/workflows/deploy-run.yml
+    uses: ./.github/workflows/deploy-function.yml
     with:
       working-directory: dogzh-server
       gcp_region: "us-central1"
       deploy-type: "run"
-    secrets: inherit
-
-  deploy-notify:
-    needs: changes
-    if: needs.changes.outputs.notify == 'true'
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/deploy-run.yml # Reusing the same logic or a separate one
-    with:
-      working-directory: notify-function
-      gcp_region: "us-central1"
-      deploy-type: "function"
     secrets: inherit
