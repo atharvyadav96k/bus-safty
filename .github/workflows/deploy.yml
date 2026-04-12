@@ -20,16 +20,3 @@ jobs:
               - 'dogzh-server/**'
             notify:
               - 'notify-function/**'
-
-  deploy-server:
-    needs: changes
-    if: needs.changes.outputs.server == 'true'
-    permissions:
-      id-token: write
-      contents: read
-    uses: ./.github/workflows/deploy-function.yml
-    with:
-      working-directory: dogzh-server/server
-      gcp_region: "us-central1"
-      deploy-type: "run"
-    secrets: inherit
