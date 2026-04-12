@@ -16,7 +16,7 @@ jobs:
         with:
           filters: |
             server:
-              - 'dogzh/server/**'
+              - 'dogzh-server/**'
 
   deploy-server:
     needs: changes
@@ -26,5 +26,5 @@ jobs:
       contents: read
     uses: ./.github/workflows/reusable-server.yml
     with:
-      working-directory: dogzh-server/server
+      working-directory: dogzh-server
     secrets: inherit
