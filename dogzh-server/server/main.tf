@@ -55,7 +55,7 @@ resource "google_cloud_run_v2_service" "server" {
   name     = var.service_name
   location = var.region
   lifecycle {
-  create_before_destroy = true
+  prevent_destroy = false
 }
   template {
     service_account = data.google_service_account.run_sa.email
