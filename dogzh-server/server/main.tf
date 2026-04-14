@@ -48,7 +48,7 @@ data "google_service_account" "run_sa" {
 resource "google_project_iam_member" "firestore_access" {
   project = var.project_id
   role    = "roles/datastore.user"
-  member  = "serviceAccount:${google_service_account.run_sa.email}"
+  member  = "serviceAccount:${data.google_service_account.run_sa.email}"
 }
 
 resource "google_cloud_run_v2_service" "server" {
@@ -57,7 +57,7 @@ resource "google_cloud_run_v2_service" "server" {
   ingress  = "INGRESS_TRAFFIC_ALL"
 
   template {
-    service_account = google_service_account.run_sa.email
+    service_account = data.google_service_account.run_sa.email
 
     containers {
       image = var.container_image
