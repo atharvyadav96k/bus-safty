@@ -7,15 +7,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/atharvyadav96k/bus-safty/dogzh-server/common/response"
+	"github.com/atharvyadav96k/bus-safty/dogzh-server/controller"
 	"github.com/gorilla/mux"
 )
 
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", HomeHandler).Methods("GET")
-	r.HandleFunc("/api/health", HealthCheckHandler).Methods("GET")
+	controller.RegisterApiRoutes(r)
 
 	port := os.Getenv("PORT")
 	if port == "" {

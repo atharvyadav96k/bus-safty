@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-    paths: 
+    paths:
+      - 'server/**' 
       - 'demo/**'
       - 'users/create-users/**'
       - 'users/delete-user/**'
