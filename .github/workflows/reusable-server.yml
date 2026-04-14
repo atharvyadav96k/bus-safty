@@ -10,7 +10,6 @@ on:
       GCP_PROJECT_ID: { required: true }
       GCP_WIF_PROVIDER: { required: true }
       GCP_SA_EMAIL: { required: true }
-      GCP_SERVER_PORT: { required: true }
 
 jobs:
   deploy:
@@ -62,3 +61,4 @@ jobs:
           -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
           -var="container_image=$IMAGE_URL" \
           -var="port=${{ secrets.GCP_SERVER_PORT }}"
+          -var="region=${{ vars.GCP_REGION }}"
