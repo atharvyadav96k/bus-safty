@@ -18,7 +18,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    
+
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
@@ -34,12 +34,15 @@ jobs:
 
       - name: Build and Push
         run: |
-          # Note: We use the region from vars or hardcode if not set
-          gcloud auth configure-docker us-central1-docker.pkg.dev
-          IMAGE_URL="us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/dogzh-repo/server:${{ github.sha }}"
+          REGION="${{ vars.GCP_REGION }}"
+          REPO_DOMAIN="${REGION}-docker.pkg.dev"
+
+          gcloud auth configure-docker $REPO_DOMAIN
+
+          IMAGE_URL="$REPO_DOMAIN/${{ secrets.GCP_PROJECT_ID }}/dogzh-repo/server:${{ github.sha }}"
+
           docker build -t $IMAGE_URL .
           docker push $IMAGE_URL
-          # Save this to a file because ENV variables don't always persist across directory changes
           echo "$IMAGE_URL" > /tmp/image_url.txt
 
       - name: Setup Terraform
@@ -54,7 +57,7 @@ jobs:
         run: |
           # Read the image URL we just built
           IMAGE_URL=$(cat /tmp/image_url.txt)
-          
+
           terraform apply -auto-approve \
           -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
           -var="container_image=$IMAGE_URL" \
