@@ -54,8 +54,9 @@ resource "google_project_iam_member" "firestore_access" {
 resource "google_cloud_run_v2_service" "server" {
   name     = var.service_name
   location = var.region
-  ingress  = "INGRESS_TRAFFIC_ALL"
-
+  lifecycle {
+  create_before_destroy = true
+}
   template {
     service_account = data.google_service_account.run_sa.email
 
