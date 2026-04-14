@@ -11,7 +11,6 @@ on:
       GCP_WIF_PROVIDER: { required: true }
       GCP_SA_EMAIL: { required: true }
       GCP_SERVER_PORT: { required: true }
-      GCP_REGION: { required: true }
 
 jobs:
   deploy:
