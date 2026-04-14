@@ -10,7 +10,6 @@ on:
       GCP_PROJECT_ID: { required: true }
       GCP_WIF_PROVIDER: { required: true }
       GCP_SA_EMAIL: { required: true }
-      GCP_SERVER_PORT: { required: true }
 
 jobs:
   deploy:
