@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/atharvyadav96k/bus-safty/dogzh-server/common/response"
@@ -16,14 +17,19 @@ func main() {
 	r.HandleFunc("/", HomeHandler).Methods("GET")
 	r.HandleFunc("/api/health", HealthCheckHandler).Methods("GET")
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         "127.0.0.1:8080",
+		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 
-	fmt.Println("Server is running on http://127.0.0.1:8080")
+	fmt.Println("Server is running on port", port)
 	log.Fatal(srv.ListenAndServe())
 }
 
