@@ -41,9 +41,8 @@ resource "google_project_service" "enabled_apis" {
   disable_on_destroy = false
 }
 
-resource "google_service_account" "run_sa" {
-  account_id   = "${var.service_name}-sa"
-  display_name = "Service Account for Cloud Run ${var.service_name}"
+data "google_service_account" "run_sa" {
+  account_id = "${var.service_name}-sa"
 }
 
 resource "google_project_iam_member" "firestore_access" {
