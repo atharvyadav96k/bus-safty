@@ -17,14 +17,20 @@ jobs:
           filters: |
             register_org:
               - 'org/register/**'
+            update_org:
               - 'org/update/**'
+            delete_org:
               - 'org/delete/**'
+            get_all_org:
               - 'org/get_all_org/**'
           
             register_user:
               - 'user/register/**'
+            update_user:
               - 'user/update/**'
+            delete_user:
               - 'user/delete/**'
+            get_all_users:
               - 'user/get_all_users/**'
 
   register_org:
@@ -41,7 +47,7 @@ jobs:
 
   update_org:
     needs: changes
-    if: needs.changes.outputs.register_org == 'true'
+    if: needs.changes.outputs.update_org == 'true'
     permissions:
       id-token: write
       contents: read
@@ -53,7 +59,7 @@ jobs:
 
   delete_org:
     needs: changes
-    if: needs.changes.outputs.register_org == 'true'
+    if: needs.changes.outputs.delete_org == 'true'
     permissions:
       id-token: write
       contents: read
@@ -65,7 +71,7 @@ jobs:
 
   get_all_org:
     needs: changes
-    if: needs.changes.outputs.register_org == 'true'
+    if: needs.changes.outputs.get_all_org == 'true'
     permissions:
       id-token: write
       contents: read
@@ -89,7 +95,7 @@ jobs:
 
   update_user:
     needs: changes
-    if: needs.changes.outputs.register_user == 'true'
+    if: needs.changes.outputs.update_user == 'true'
     permissions:
       id-token: write
       contents: read
@@ -101,7 +107,7 @@ jobs:
 
   delete_user:
     needs: changes
-    if: needs.changes.outputs.register_user == 'true'
+    if: needs.changes.outputs.delete_user == 'true'
     permissions:
       id-token: write
       contents: read
@@ -113,7 +119,7 @@ jobs:
 
   get_all_users:
     needs: changes 
-    if: needs.changes.outputs.register_user == 'true'
+    if: needs.changes.outputs.get_all_users == 'true'
     permissions:
       id-token: write
       contents: read
