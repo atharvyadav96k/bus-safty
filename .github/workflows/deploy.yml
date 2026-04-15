@@ -3,12 +3,12 @@ name: Checking for changes
 on:
   push:
     branches: [ main ]
-
 jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
       register_org: ${{ steps.filter.outputs.register_org }}
+      register_user: ${{ steps.filter.outputs.register_user }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -17,7 +17,7 @@ jobs:
           filters: |
             register_org:
               - 'org/register/**'
-            regiser_user:
+            register_user:
               - 'user/register/**'
 
   register_org:
@@ -28,17 +28,18 @@ jobs:
       contents: read
     uses: ./.github/workflows/deploy-function.yml
     with:
-      working-directory: register
+      working-directory: org/register
+      gcp_region: "us-central1"
     secrets: inherit
     
   register_user:
     needs: changes
-    if: needs.changes.outputs.regiser_user == 'true'
+    if: needs.changes.outputs.register_user == 'true'
     permissions:
       id-token: write
       contents: read
     uses: ./.github/workflows/deploy-function.yml
     with:
-      working-directory: register
+      working-directory: user/register
+      gcp_region: ${{ vars.GCP_REGION }}
     secrets: inherit
-  
