@@ -8,24 +8,37 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      server: ${{ steps.filter.outputs.server }}
+      register_org: ${{ steps.filter.outputs.register_org }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
-            server:
-              - 'dogzh-server/**'
-              - '.github/workflows/reusable-server.yml'
+            register_org:
+              - 'org/register/**'
+            regiser_user:
+              - 'user/register/**'
 
-  deploy-server:
+  register_org:
     needs: changes
-    if: needs.changes.outputs.server == 'true'
+    if: needs.changes.outputs.register_org == 'true'
     permissions:
       id-token: write
       contents: read
-    uses: ./.github/workflows/reusable-server.yml
+    uses: ./.github/workflows/deploy-function.yml
     with:
-      working-directory: dogzh-server/server
+      working-directory: register
     secrets: inherit
+    
+  register_user:
+    needs: changes
+    if: needs.changes.outputs.regiser_user == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: register
+    secrets: inherit
+  
