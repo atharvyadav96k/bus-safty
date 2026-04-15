@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "terraform-state-603675804309"
+    bucket  = "dogzh-bucket"
     prefix  = "cloud-functions/register_user"
   }
 
