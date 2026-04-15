@@ -17,8 +17,15 @@ jobs:
           filters: |
             register_org:
               - 'org/register/**'
+              - 'org/update/**'
+              - 'org/delete/**'
+              - 'org/get_all_org/**'
+          
             register_user:
               - 'user/register/**'
+              - 'user/update/**'
+              - 'user/delete/**'
+              - 'user/get_all_users/**'
 
   register_org:
     needs: changes
@@ -31,6 +38,42 @@ jobs:
       working-directory: org/register
       gcp_region: ${{ vars.GCP_REGION }}
     secrets: inherit
+
+  update_org:
+    needs: changes
+    if: needs.changes.outputs.register_org == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: org/update
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  delete_org:
+    needs: changes
+    if: needs.changes.outputs.register_org == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: org/delete
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  get_all_org:
+    needs: changes
+    if: needs.changes.outputs.register_org == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: org/get_all_org
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
     
   register_user:
     needs: changes
@@ -41,5 +84,41 @@ jobs:
     uses: ./.github/workflows/deploy-function.yml
     with:
       working-directory: user/register
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  update_user:
+    needs: changes
+    if: needs.changes.outputs.register_user == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: user/update
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  delete_user:
+    needs: changes
+    if: needs.changes.outputs.register_user == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: user/delete
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  get_all_users:
+    needs: changes 
+    if: needs.changes.outputs.register_user == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: user/get_all_users
       gcp_region: ${{ vars.GCP_REGION }}
     secrets: inherit
