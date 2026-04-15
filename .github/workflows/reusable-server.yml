@@ -60,5 +60,5 @@ jobs:
           terraform apply -auto-approve \
           -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
           -var="container_image=$IMAGE_URL" \
-          -var="port=${{ secrets.GCP_SERVER_PORT }}"
+          -var="port=${{ secrets.GCP_SERVER_PORT }}" \
           -var="region=${{ vars.GCP_REGION }}"
