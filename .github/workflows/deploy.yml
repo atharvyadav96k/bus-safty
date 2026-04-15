@@ -6,33 +6,30 @@ on:
 jobs:
   changes:
     runs-on: ubuntu-latest
+    # Map EVERY filter here so subsequent jobs can see them
     outputs:
       register_org: ${{ steps.filter.outputs.register_org }}
+      update_org: ${{ steps.filter.outputs.update_org }}
+      delete_org: ${{ steps.filter.outputs.delete_org }}
+      get_all_org: ${{ steps.filter.outputs.get_all_org }}
       register_user: ${{ steps.filter.outputs.register_user }}
+      update_user: ${{ steps.filter.outputs.update_user }}
+      delete_user: ${{ steps.filter.outputs.delete_user }}
+      get_all_users: ${{ steps.filter.outputs.get_all_users }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
-            register_org:
-              - 'org/register/**'
-            update_org:
-              - 'org/update/**'
-            delete_org:
-              - 'org/delete/**'
-            get_all_org:
-              - 'org/get_all_org/**'
-          
-            register_user:
-              - 'user/register/**'
-            update_user:
-              - 'user/update/**'
-            delete_user:
-              - 'user/delete/**'
-            get_all_users:
-              - 'user/get_all_users/**'
-
+            register_org: ['org/register/**']
+            update_org: ['org/update/**']
+            delete_org: ['org/delete/**']
+            get_all_org: ['org/get_all_org/**']
+            register_user: ['user/register/**']
+            update_user: ['user/update/**']
+            delete_user: ['user/delete/**']
+            get_all_users: ['user/get_all_users/**']
   register_org:
     needs: changes
     if: needs.changes.outputs.register_org == 'true'
