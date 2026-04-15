@@ -84,6 +84,9 @@ resource "google_cloud_run_service_iam_member" "public_access" {
   service  = google_cloudfunctions2_function.register_org.name
   role     = "roles/run.invoker"
   member   = "allUsers"
+  depends_on = [
+    google_cloudfunctions2_function.register_org
+  ]
 }
 
 output "function_url" {
