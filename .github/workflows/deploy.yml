@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/deploy-function.yml
     with:
       working-directory: org/register
-      gcp_region: "us-central1"
+      gcp_region: ${{ vars.GCP_REGION }}
     secrets: inherit
     
   register_user:
