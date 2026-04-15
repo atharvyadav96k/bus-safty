@@ -81,9 +81,13 @@ resource "google_cloudfunctions2_function" "register_user" {
 
 resource "google_cloud_run_service_iam_member" "public_access" {
   location = var.region
-  service  = google_cloudfunctions2_function.register_user.name
+  service  = google_cloudfunctions2_function.register_user.service_config[0].service
   role     = "roles/run.invoker"
   member   = "allUsers"
+
+  depends_on = [
+    google_cloudfunctions2_function.register_user
+  ]
 }
 
 output "function_url" {
