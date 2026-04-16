@@ -3,6 +3,11 @@ module github.com/atharvyadav96k/bus-safty/user/register
 go 1.25.5
 
 require (
+	github.com/atharvyadav96k/bus-safty-app v0.0.0-20260416213308-b5b0e63073c9
+	github.com/atharvyadav96k/gcp v1.1.2
+)
+
+require (
 	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
@@ -12,7 +17,6 @@ require (
 	cloud.google.com/go/longrunning v0.10.0 // indirect
 	cloud.google.com/go/pubsub v1.50.2 // indirect
 	cloud.google.com/go/pubsub/v2 v2.6.0 // indirect
-	github.com/atharvyadav96k/gcp v1.1.0
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
