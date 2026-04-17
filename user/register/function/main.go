@@ -12,6 +12,8 @@ import (
 	"github.com/atharvyadav96k/bus-safty/user/register/applyaer"
 	"github.com/atharvyadav96k/gcp/common/entity"
 	"github.com/atharvyadav96k/gcp/common/res"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
@@ -32,8 +34,12 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	docRef := app.FireStore.FirestoreClient.Collection("users").Doc(user.WhiteListedEmailID.String())
 	_, err := docRef.Set(ctx, user)
+	fmt.Println(err)
 	if err != nil {
-		res.BadRequest(w, errs)
+		if status.Code(err) == codes.AlreadyExists {
+			err = errors.New("user already exits with this email")
+		}
+		res.BadRequest(w, []error{err})
 		return
 	}
 	res.Send(w, 201, "Created", user)
