@@ -23,7 +23,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	var user database_models.User
 	json.NewDecoder(r.Body).Decode(&user)
 	ctx := context.Background()
-	errs := entity.ValidateStruct(user)
+	errs := entity.ValidateStruct(&user)
 	if len(errs) != 0 {
 		res.BadRequest(w, errs)
 		return
