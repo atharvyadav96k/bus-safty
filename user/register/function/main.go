@@ -31,6 +31,9 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	docRef := app.FireStore.FirestoreClient.Collection("users").Doc(user.WhiteListedEmailID.String())
-	docRef.Set(ctx, user)
+	_, err := docRef.Set(ctx, user)
+	if err != nil {
+		res.BadRequest(w, errs)
+	}
 	res.Send(w, 201, "Created", user)
 }
