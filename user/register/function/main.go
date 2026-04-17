@@ -3,6 +3,7 @@ package user_register
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"errors"
@@ -22,6 +23,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	defer app.Close()
 	var user database_models.User
 	json.NewDecoder(r.Body).Decode(&user)
+	fmt.Println(user)
 	ctx := context.Background()
 	errs := entity.ValidateStruct(&user)
 	if len(errs) != 0 {
