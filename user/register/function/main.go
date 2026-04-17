@@ -30,7 +30,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		res.BadRequest(w, errs)
 		return
 	}
-	app.FireStore.FirestoreClient.CollectionGroup(user.WhiteListedEmailID.String())
+	app.FireStore.FirestoreClient.Collection("users").Doc(user.WhiteListedEmailID.String())
 	app.FireStore.FirestoreClient.Collection("users").Add(ctx, user)
 	res.Send(w, 201, "Created", user)
 }
