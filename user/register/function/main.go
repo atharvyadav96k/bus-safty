@@ -33,7 +33,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	docRef := app.FireStore.FirestoreClient.Collection("users").Doc(user.WhiteListedEmailID.String())
-	_, err := docRef.Set(ctx, user)
+	_, err := docRef.Create(ctx, user)
 	fmt.Println(err)
 	if err != nil {
 		if status.Code(err) == codes.AlreadyExists {
