@@ -22,6 +22,8 @@ cloud.google.com/go/pubsub/v2 v2.6.0/go.mod h1:4anqvV/w8Pcgu2tO0qr2XgsF3GXHowzry
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/atharvyadav96k/bus-safty-app v0.0.0-20260416213308-b5b0e63073c9 h1:Sa3w2anj9kXWe9G6xaim7yDZ5/fU4T+KRqpk2WLn09g=
 github.com/atharvyadav96k/bus-safty-app v0.0.0-20260416213308-b5b0e63073c9/go.mod h1:te6eE3/X3SRE4XVuXN8MhEjPYyiHcx1GRKALEKtZgho=
+github.com/atharvyadav96k/bus-safty-app v1.0.0 h1:zHJUOo8++W2vmMMtGUDHNYQVONt3TAronIWppqH67JM=
+github.com/atharvyadav96k/bus-safty-app v1.0.0/go.mod h1:te6eE3/X3SRE4XVuXN8MhEjPYyiHcx1GRKALEKtZgho=
 github.com/atharvyadav96k/gcp v1.1.2 h1:+C4nNrU5lPTfmtf6qrdQqc9WMeu2U5nNtlrZYJiB8Wg=
 github.com/atharvyadav96k/gcp v1.1.2/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
 github.com/atharvyadav96k/gcp v1.1.4 h1:qZZdyTkpuriALUtDy3CK8kYEzctIMgtrhCLkGyp72YA=

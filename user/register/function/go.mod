@@ -3,7 +3,7 @@ module github.com/atharvyadav96k/bus-safty/user/register
 go 1.25.5
 
 require (
-	github.com/atharvyadav96k/bus-safty-app v0.0.0-20260416213308-b5b0e63073c9
+	github.com/atharvyadav96k/bus-safty-app v1.0.0
 	github.com/atharvyadav96k/gcp v1.1.4
 )
 
