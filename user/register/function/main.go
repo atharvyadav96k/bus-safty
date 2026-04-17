@@ -34,6 +34,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	_, err := docRef.Set(ctx, user)
 	if err != nil {
 		res.BadRequest(w, errs)
+		return
 	}
 	res.Send(w, 201, "Created", user)
 }
