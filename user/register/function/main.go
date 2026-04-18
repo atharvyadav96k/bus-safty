@@ -24,11 +24,10 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	defer app.Close()
 
 	var user database_models.User
-	if err := req.ParseBody(r, user); err != nil {
+	if err := req.ParseBody(r, &user); err != nil {
 		res.BadRequest(w, []error{err})
 		return
 	}
-
 	errs := entity.ValidateStruct(&user)
 
 	if len(errs) != 0 {
