@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func UserRegister(w http.ResponseWriter, r *http.Request) {
+func OrgRegister(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		res.BadRequest(w, []error{errors.New("Method not allowed")})
 		return
