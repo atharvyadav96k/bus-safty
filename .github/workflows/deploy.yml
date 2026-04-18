@@ -16,6 +16,12 @@ jobs:
       update_user: ${{ steps.filter.outputs.update_user }}
       delete_user: ${{ steps.filter.outputs.delete_user }}
       get_all_users: ${{ steps.filter.outputs.get_all_users }}
+      add_location_bus: ${{ steps.filter.outputs.add_location_bus }}
+      delete_bus: ${{ steps.filter.outputs.delete_bus }}
+      get_bus_from_org_bus: ${{ steps.filter.outputs.get_bus_from_org_bus }}
+      get_location_bus: ${{ steps.filter.outputs.get_location_bus }}
+      register_bus: ${{ steps.filter.outputs.register_bus }}
+      update_bus: ${{ steps.filter.outputs.update_bus }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -30,6 +36,12 @@ jobs:
             update_user: ['user/update/**']
             delete_user: ['user/delete/**']
             get_all_users: ['user/get_all_users/**']
+            add_location_bus: ['bus/add_location/**']
+            delete_bus: ['bus/delete/**']
+            get_bus_from_org_bus: ['bus/get_bus_from_org/**']
+            get_location_bus: ['bus/get_location/**']
+            register_bus: ['bus/register/**']
+            update_bus: ['bus/update/**']
   register_org:
     needs: changes
     if: needs.changes.outputs.register_org == 'true'
@@ -125,3 +137,75 @@ jobs:
       working-directory: user/get_all_users
       gcp_region: ${{ vars.GCP_REGION }}
     secrets: inherit
+
+  add_location_bus:
+    needs: changes
+    if: needs.changes.outputs.add_location_bus == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: bus/add_location
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  delete_bus:
+    needs: changes
+    if: needs.changes.outputs.delete_bus == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: bus/delete
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+
+  get_bus_from_org_bus:
+    needs: changes
+    if: needs.changes.outputs.get_bus_from_org_bus == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: bus/get_bus_from_org
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+    
+  get_location_bus:
+    needs: changes
+    if: needs.changes.outputs.get_location_bus == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: bus/get_location
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit 
+
+  register_bus:
+    needs: changes
+    if: needs.changes.outputs.register_bus == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: bus/register
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit  
+
+  update_bus:
+    needs: changes
+    if: needs.changes.outputs.update_bus == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: bus/update
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit  
