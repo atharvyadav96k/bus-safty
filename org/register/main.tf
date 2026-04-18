@@ -76,6 +76,10 @@ resource "google_cloudfunctions2_function" "register_org" {
     timeout_seconds       = 60
     service_account_email = var.service_account
     ingress_settings      = "ALLOW_ALL"
+
+    environment_variables = {
+      GCP_PROJECT_ID = var.project_id
+    }
   }
 }
 
