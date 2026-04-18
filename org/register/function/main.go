@@ -2,6 +2,7 @@ package org_register
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"errors"
@@ -37,7 +38,8 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 	}
 
 	iter := app.StoreDoc("org").Where("code", "==", org.Code).Limit(1).Documents(context.Background())
-	_, err := iter.Next()
+	data, err := iter.Next()
+	fmt.Println(data)
 	if err == nil {
 		res.BadRequest(w, []error{errors.New("User with this code already exists")})
 		return
