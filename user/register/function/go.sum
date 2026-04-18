@@ -28,6 +28,14 @@ github.com/atharvyadav96k/gcp v1.1.2 h1:+C4nNrU5lPTfmtf6qrdQqc9WMeu2U5nNtlrZYJiB
 github.com/atharvyadav96k/gcp v1.1.2/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
 github.com/atharvyadav96k/gcp v1.1.4 h1:qZZdyTkpuriALUtDy3CK8kYEzctIMgtrhCLkGyp72YA=
 github.com/atharvyadav96k/gcp v1.1.4/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
+github.com/atharvyadav96k/gcp v1.1.5 h1:+11YqYKwgSPQkKCxfqEONBM+4R/p94urg6djpT62Bgg=
+github.com/atharvyadav96k/gcp v1.1.5/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
+github.com/atharvyadav96k/gcp v1.1.6 h1:YwxXZtktkovl6r/ABlOT//5DBUIYYfifA8yxIxmhcSM=
+github.com/atharvyadav96k/gcp v1.1.6/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
+github.com/atharvyadav96k/gcp v1.1.7 h1:HGiuByQAoMHEsHpgT0GKhCdLbl8wZ9C3zCEMJbFBNVk=
+github.com/atharvyadav96k/gcp v1.1.7/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
+github.com/atharvyadav96k/gcp v1.1.8 h1:vLUGrEIA/YakvuHpgSgZgaFvtQ9uCtz1aqHozLzVZqQ=
+github.com/atharvyadav96k/gcp v1.1.8/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
