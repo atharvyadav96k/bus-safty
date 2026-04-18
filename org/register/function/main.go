@@ -37,7 +37,7 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	iter := app.StoreDoc("org").Where("code", "==", org.Code).Limit(1).Documents(context.Background())
+	iter := app.StoreDoc("org").Where("Code", "==", org.Code).Limit(1).Documents(context.Background())
 	data, err := iter.Next()
 	fmt.Println(data)
 	if err == nil {
