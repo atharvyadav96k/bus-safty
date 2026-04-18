@@ -60,7 +60,7 @@ resource "google_cloudfunctions2_function" "get_location" {
 
   build_config {
     runtime     = "go122"
-    entry_point = "GetLocation"
+    entry_point = "GetBusLocation"
     service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
       storage_source {

@@ -60,7 +60,7 @@ resource "google_cloudfunctions2_function" "register" {
 
   build_config {
     runtime     = "go122"
-    entry_point = "Register"
+    entry_point = "BusRegister"
     service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
       storage_source {

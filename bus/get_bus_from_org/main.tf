@@ -60,7 +60,7 @@ resource "google_cloudfunctions2_function" "get_bus_from_org" {
 
   build_config {
     runtime     = "go122"
-    entry_point = "GetBusFromOrg"
+    entry_point = "GetBusByOrg"
     service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
       storage_source {
