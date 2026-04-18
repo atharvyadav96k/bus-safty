@@ -1,4 +1,4 @@
-package applyaer
+package applayer
 
 import "github.com/atharvyadav96k/gcp/app"
 
