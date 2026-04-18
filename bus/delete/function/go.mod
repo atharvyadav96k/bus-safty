@@ -1,4 +1,4 @@
-module github.com/atharvyadav96k/bus-safty/org/register
+module github.com/atharvyadav96k/bus-safty/bus/delete
 
 go 1.25.5
 
