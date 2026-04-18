@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     bucket  = "dogzh-bucket"
-    prefix  = "cloud-functions/delete_users"
+    prefix  = "cloud-functions/get_location"
   }
 
   required_providers {
@@ -54,13 +54,13 @@ resource "google_storage_bucket_object" "source_archive" {
 }
 
 
-resource "google_cloudfunctions2_function" "delete_users" {
-  name     = "delete_users"
+resource "google_cloudfunctions2_function" "get_location" {
+  name     = "get_location"
   location = var.region
 
   build_config {
     runtime     = "go122"
-    entry_point = "UsersDelete"
+    entry_point = "GetBusLocation"
     service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
       storage_source {
@@ -81,19 +81,20 @@ resource "google_cloudfunctions2_function" "delete_users" {
       GCP_PROJECT_ID = var.project_id
     }
   }
-}
+  }
+
 
 resource "google_cloud_run_service_iam_member" "public_access" {
   location = var.region
-  service  = google_cloudfunctions2_function.delete_users.service_config[0].service
+  service  = google_cloudfunctions2_function.get_location.service_config[0].service
   role     = "roles/run.invoker"
   member   = "allUsers"
 
   depends_on = [
-    google_cloudfunctions2_function.delete_users
+    google_cloudfunctions2_function.get_location
   ]
 }
 
 output "function_url" {
-  value = google_cloudfunctions2_function.delete_users.service_config[0].uri
+  value = google_cloudfunctions2_function.get_location.service_config[0].uri
 }
