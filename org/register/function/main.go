@@ -1,18 +1,24 @@
 package org_register
 
 import (
-	"errors"
+	"context"
 	"net/http"
+	"time"
+
+	"errors"
 
 	database_models "github.com/atharvyadav96k/bus-safty-app/database/models"
 	"github.com/atharvyadav96k/bus-safty/org/register/applayer"
-	"github.com/atharvyadav96k/bus-safty/org/register/operation"
 	"github.com/atharvyadav96k/gcp/common/entity"
 	"github.com/atharvyadav96k/gcp/common/req"
 	"github.com/atharvyadav96k/gcp/common/res"
 )
 
 func OrgRegister(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		res.BadRequest(w, []error{errors.New("Method not allowed")})
+		return
+	}
 	app := applayer.Init()
 	defer app.Close()
 
@@ -28,21 +34,12 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	switch r.Method {
-	case http.MethodPost:
-		operation.CreateOrg(w, app, org)
-		return
-	case http.MethodPatch:
-		operation.Update(w, app, org)
-		return
-	case http.MethodGet:
-		operation.GetOrgs(w, app)
-		return
-	case http.MethodDelete:
-		operation.Delete(w, app, org)
-		return
-	default:
-		res.BadRequest(w, []error{errors.New("Method not allowed")})
-	}
+	org.CreatedAt = time.Now()
+	org.UpdatedAt = time.Now()
 
+	if err := app.StoreCreateWithId(context.Background(), "org", org.ContactEmail.String(), org); err != nil {
+		res.BadRequest(w, []error{err})
+		return
+	}
+	res.Created(w, "Org registered successfully", org)
 }
