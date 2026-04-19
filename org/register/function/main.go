@@ -2,7 +2,6 @@ package org_register
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"errors"
@@ -12,7 +11,6 @@ import (
 	"github.com/atharvyadav96k/gcp/common/entity"
 	"github.com/atharvyadav96k/gcp/common/req"
 	"github.com/atharvyadav96k/gcp/common/res"
-	"google.golang.org/api/iterator"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -34,19 +32,6 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 
 	if len(errs) != 0 {
 		res.BadRequest(w, errs)
-		return
-	}
-
-	iter := app.StoreDoc("org").Where("Code", "==", org.Code).Limit(1).Documents(context.Background())
-	data, err := iter.Next()
-	fmt.Println(data)
-	if err == nil {
-		res.BadRequest(w, []error{errors.New("User with this code already exists")})
-		return
-	}
-
-	if err != iterator.Done {
-		res.InternalServerError(w, []error{err})
 		return
 	}
 
