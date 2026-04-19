@@ -3,6 +3,7 @@ package org_register
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"errors"
 
@@ -33,9 +34,12 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	org.CreatedAt = time.Now()
+	org.UpdatedAt = time.Now()
+
 	if err := app.StoreCreateWithId(context.Background(), "org", org.ContactEmail.String(), org); err != nil {
 		res.BadRequest(w, []error{err})
 		return
 	}
-	res.Created(w, "User registered successfully", org)
+	res.Created(w, "Org registered successfully", org)
 }
