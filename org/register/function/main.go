@@ -11,8 +11,6 @@ import (
 	"github.com/atharvyadav96k/gcp/common/entity"
 	"github.com/atharvyadav96k/gcp/common/req"
 	"github.com/atharvyadav96k/gcp/common/res"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func OrgRegister(w http.ResponseWriter, r *http.Request) {
@@ -36,9 +34,6 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := app.StoreCreateWithId(context.Background(), "org", org.ContactEmail.String(), org); err != nil {
-		if status.Code(err) == codes.AlreadyExists {
-			err = errors.New("org already exits with this email")
-		}
 		res.BadRequest(w, []error{err})
 		return
 	}
