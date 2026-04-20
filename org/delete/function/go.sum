@@ -24,12 +24,16 @@ github.com/atharvyadav96k/bus-safty-app v1.0.0 h1:zHJUOo8++W2vmMMtGUDHNYQVONt3TA
 github.com/atharvyadav96k/bus-safty-app v1.0.0/go.mod h1:te6eE3/X3SRE4XVuXN8MhEjPYyiHcx1GRKALEKtZgho=
 github.com/atharvyadav96k/bus-safty-app v1.0.1 h1:oJLQwF9TxYlH0H/bdVxEuEE0dEKd65Dbf08ziXWMsv4=
 github.com/atharvyadav96k/bus-safty-app v1.0.1/go.mod h1:te6eE3/X3SRE4XVuXN8MhEjPYyiHcx1GRKALEKtZgho=
+github.com/atharvyadav96k/bus-safty-app v1.0.3 h1:Ad27mTd+j1Qzbic/ZHMJ58LBrGp0SyTpoMm5HnuWr98=
+github.com/atharvyadav96k/bus-safty-app v1.0.3/go.mod h1:8dB/v6kOGyA2q1kozs2jVQ8dIGqeAFqBojQYgOJtYgE=
 github.com/atharvyadav96k/gcp v1.2.0 h1:xgq0a8bFtSRwNholdc3y5UcROK6bFrVWlQ2gCz5T5W4=
 github.com/atharvyadav96k/gcp v1.2.0/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
 github.com/atharvyadav96k/gcp v1.2.1 h1:vMk5/VM+vwarQSyhJp/7R0BWO/4RB2pp6o8uJ9Ux98A=
 github.com/atharvyadav96k/gcp v1.2.1/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
 github.com/atharvyadav96k/gcp v1.2.2 h1:VIopEUfG/+KlW1zpA41upxYJgenFkAfDd9quEQ5D0Vc=
 github.com/atharvyadav96k/gcp v1.2.2/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
+github.com/atharvyadav96k/gcp v1.2.3 h1:M6QED5KPeW2T5u8lO6IupeqLYsa/e+0IofjgC4lY2WE=
+github.com/atharvyadav96k/gcp v1.2.3/go.mod h1:pWB3aIfGOYwBu5oIk4ddwg3Wn6++umF3pNK+it5yzzo=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=

@@ -19,13 +19,13 @@ func UsersDelete(w http.ResponseWriter, r *http.Request) {
 	app := applayer.Init()
 	defer app.Close()
 
-	var user database_models.User
-	if err := req.ParseBody(r, &user); err != nil {
+	var userId database_models.Id
+	if err := req.ParseBody(r, &userId); err != nil {
 		res.BadRequest(w, []error{err})
 		return
 	}
 
-	if err := app.StoreDelete(context.Background(), "user", user.WhiteListedEmailID.String()); err != nil {
+	if err := app.StoreDelete(context.Background(), "user", userId.ID); err != nil {
 		res.BadRequest(w, []error{err})
 		return
 	}
