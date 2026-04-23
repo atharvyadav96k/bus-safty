@@ -13,7 +13,7 @@ require (
 	cloud.google.com/go/pubsub v1.50.2 // indirect
 	cloud.google.com/go/pubsub/v2 v2.6.0 // indirect
 	github.com/atharvyadav96k/bus-safty-app v1.0.6 // indirect
-	github.com/atharvyadav96k/gcp v1.2.5 // indirect
+	github.com/atharvyadav96k/gcp v1.2.6 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
