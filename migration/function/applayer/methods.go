@@ -4,8 +4,8 @@ import database_models "github.com/atharvyadav96k/bus-safty-app/database/models"
 
 func GetMigrationTables() []interface{} {
 	return []interface{}{
-		database_models.WhiteListedEmail{},
 		database_models.Org{},
+		database_models.WhiteListedEmail{},
 
 		database_models.RFID{},
 
