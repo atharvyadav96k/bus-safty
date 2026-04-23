@@ -10,32 +10,49 @@ import (
 )
 
 func Migration(w http.ResponseWriter, r *http.Request) {
+	log.Println("========== MIGRATION START ==========")
+
+	log.Println("Initializing app and database connection...")
 	app := applayer.Init()
-	defer app.Close()
+	defer func() {
+		log.Println("Closing database connection...")
+		app.Close()
+	}()
 
 	log.Println("Starting database migration...")
 
 	// Verify database connection
+	if app == nil {
+		log.Println("ERROR: App instance is nil")
+		res.BadRequest(w, []error{fmt.Errorf("app instance is nil")})
+		return
+	}
+	log.Println("✓ App instance initialized")
+
 	if app.Neon == nil {
 		log.Println("ERROR: Neon service is nil")
 		res.BadRequest(w, []error{fmt.Errorf("database service not initialized")})
 		return
 	}
+	log.Println("✓ Neon service exists")
 
 	db := app.Neon.GetDB()
 	if db == nil {
 		log.Println("ERROR: Database instance is nil")
-		res.BadRequest(w, []error{fmt.Errorf("database connection failed")})
+		res.BadRequest(w, []error{fmt.Errorf("database instance is nil")})
 		return
 	}
+	log.Println("✓ Database instance exists")
 
 	// Test database connection
-	if err := db.Exec("SELECT 1").Error; err != nil {
-		log.Printf("ERROR: Database connection test failed: %v\n", err)
-		res.BadRequest(w, []error{fmt.Errorf("failed to connect to database: %w", err)})
+	log.Println("Testing database connection...")
+	testResult := db.Exec("SELECT 1")
+	if testResult.Error != nil {
+		log.Printf("ERROR: Database connection test failed: %v\n", testResult.Error)
+		res.BadRequest(w, []error{fmt.Errorf("failed to connect to database: %w", testResult.Error)})
 		return
 	}
-	log.Println("✓ Database connection established")
+	log.Println("✓ Database connection established and working")
 
 	tables := applayer.GetMigrationTables()
 	errs := make([]error, 0)
@@ -72,11 +89,13 @@ func Migration(w http.ResponseWriter, r *http.Request) {
 	// Check if any errors occurred during migration
 	if len(errs) > 0 {
 		log.Printf("Migration completed with %d error(s), %d failed\n", len(errs), len(failedTables))
+		log.Println("========== MIGRATION FAILED ==========")
 		res.BadRequest(w, errs)
 		return
 	}
 
 	log.Printf("✓ All tables migrated successfully (%d tables)\n", len(migratedTables))
+	log.Println("========== MIGRATION SUCCESS ==========")
 	res.Success(w, "All tables migrated successfully", map[string]interface{}{
 		"total_tables":  len(migratedTables),
 		"migrated":      migratedTables,
