@@ -53,7 +53,7 @@ jobs:
       contents: read
     uses: ./.github/workflows/deploy-function.yml
     with:
-      working-directory: migration/function
+      working-directory: migration
       gcp_region: ${{ vars.GCP_REGION }}
     secrets: inherit
     
