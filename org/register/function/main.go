@@ -2,10 +2,9 @@ package org_register
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
-
-	"errors"
 
 	database_models "github.com/atharvyadav96k/bus-safty-app/database/models"
 	"github.com/atharvyadav96k/bus-safty/org/register/applayer"
@@ -16,9 +15,10 @@ import (
 
 func OrgRegister(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		res.BadRequest(w, []error{errors.New("Method not allowed")})
+		res.BadRequest(w, []error{errors.New("method not allowed")})
 		return
 	}
+
 	app := applayer.Init()
 	defer app.Close()
 
@@ -27,8 +27,8 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 		res.BadRequest(w, []error{err})
 		return
 	}
-	errs := entity.ValidateStruct(&org)
 
+	errs := entity.ValidateStruct(&org)
 	if len(errs) != 0 {
 		res.BadRequest(w, errs)
 		return
@@ -37,9 +37,11 @@ func OrgRegister(w http.ResponseWriter, r *http.Request) {
 	org.CreatedAt = time.Now()
 	org.UpdatedAt = time.Now()
 
-	if err := app.StoreCreateWithId(context.Background(), "org", org.ContactEmail.String(), org); err != nil {
+	ctx := context.Background()
+	if err := app.CreateRecord(ctx, &org, nil); err != nil {
 		res.BadRequest(w, []error{err})
 		return
 	}
-	res.Created(w, "Org registered successfully", org)
+
+	res.Created(w, "Organization registered successfully", org)
 }
