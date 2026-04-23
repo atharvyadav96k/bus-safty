@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     # Map EVERY filter here so subsequent jobs can see them
     outputs:
+      migration: ${{ steps.filter.outputs.migration }}
       register_org: ${{ steps.filter.outputs.register_org }}
       update_org: ${{ steps.filter.outputs.update_org }}
       delete_org: ${{ steps.filter.outputs.delete_org }}
@@ -28,6 +29,7 @@ jobs:
         id: filter
         with:
           filters: |
+            migration: ['migration/**']
             register_org: ['org/register/**']
             update_org: ['org/update/**']
             delete_org: ['org/delete/**']
@@ -42,6 +44,19 @@ jobs:
             get_location_bus: ['bus/get_location/**']
             register_bus: ['bus/register/**']
             update_bus: ['bus/update/**']
+
+  migration:
+    needs: changes
+    if: needs.changes.outputs.migration == 'true'
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/deploy-function.yml
+    with:
+      working-directory: migration/function
+      gcp_region: ${{ vars.GCP_REGION }}
+    secrets: inherit
+    
   register_org:
     needs: changes
     if: needs.changes.outputs.register_org == 'true'
