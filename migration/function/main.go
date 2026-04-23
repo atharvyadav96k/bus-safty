@@ -10,9 +10,12 @@ import (
 func Migration(w http.ResponseWriter, r *http.Request) {
 	app := applayer.Init()
 	tables := applayer.GetMigrationTables()
-	if err := app.RegisterModels(tables...); err != nil {
-		res.InternalServerError(w, []error{err})
-		return
+	errs := make([]error, 0)
+	for _, table := range tables {
+		if err := app.Neon.GetDB().AutoMigrate(table); err != nil {
+			errs = append(errs, err)
+			return
+		}
 	}
 	res.Success(w, "Successful Completed migration", nil)
 }
